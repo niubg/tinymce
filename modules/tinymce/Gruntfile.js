@@ -14,7 +14,7 @@ let plugins = [
   'advlist', 'anchor', 'autolink', 'autoresize', 'autosave', 'charmap', 'code', 'codesample',
   'directionality', 'emoticons', 'help', 'fullscreen', 'image', 'importcss', 'insertdatetime',
   'link', 'lists', 'media', 'nonbreaking', 'pagebreak', 'preview', 'save', 'searchreplace',
-  'table', 'template', 'visualblocks', 'visualchars', 'wordcount', 'quickbars'
+  'table', 'template', 'visualblocks', 'visualchars', 'wordcount', 'quickbars', 'examine'
 ];
 
 let themes = [

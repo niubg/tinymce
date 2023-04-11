@@ -43,6 +43,7 @@
       "tinymce/plugins/visualblocks/*": ["src/plugins/visualblocks/main/ts/*"],
       "tinymce/plugins/visualchars/*": ["src/plugins/visualchars/main/ts/*"],
       "tinymce/plugins/wordcount/*": ["src/plugins/wordcount/main/ts/*"],
+      "tinymce/plugins/examine/*": ["src/plugins/examine/main/ts/*"],
 
       "@ephox/wrap-mcagar": ["src/core/test/ts/module/McAgar"]
     }
