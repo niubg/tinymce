@@ -44,6 +44,7 @@
       "tinymce/plugins/visualblocks/*": ["modules/tinymce/src/plugins/visualblocks/main/ts/*"],
       "tinymce/plugins/visualchars/*": ["modules/tinymce/src/plugins/visualchars/main/ts/*"],
       "tinymce/plugins/wordcount/*": ["modules/tinymce/src/plugins/wordcount/main/ts/*"],
+      "tinymce/plugins/examine/*": ["modules/tinymce/src/plugins/examine/main/ts/*"],
 
       "@ephox/wrap-mcagar": ["modules/tinymce/src/core/test/ts/module/McAgar"],
 
