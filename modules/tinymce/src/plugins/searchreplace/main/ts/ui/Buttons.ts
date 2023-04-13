@@ -23,7 +23,7 @@ const register = (editor: Editor, currentSearchState: Cell<SearchState>): void =
     icon: 'search'
   });
 
-  editor.shortcuts.add('Meta+F', '', showDialog(editor, currentSearchState));
+  // editor.shortcuts.add('Meta+F', '', showDialog(editor, currentSearchState));
 };
 
 export {
