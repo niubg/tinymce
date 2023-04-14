@@ -118,6 +118,7 @@ const escapeSearchText = (text: string, wholeWord: boolean): string => {
 };
 
 const find = (editor: Editor, currentSearchState: Cell<SearchState>, text: string, matchCase: boolean, wholeWord: boolean, inSelection: boolean): number => {
+  debugger
   const selection = editor.selection;
   const escapedText = escapeSearchText(text, wholeWord);
   const isForwardSelection = selection.isForward();
@@ -224,7 +225,6 @@ const done = (editor: Editor, currentSearchState: Cell<SearchState>, keepEditorS
   let startContainer: Text | null | undefined;
   let endContainer: Text | null | undefined;
   const searchState = currentSearchState.get();
-
   const nodes = Tools.toArray(editor.getBody().getElementsByTagName('span'));
   for (let i = 0; i < nodes.length; i++) {
     const nodeIndex = getElmIndex(nodes[i]);
