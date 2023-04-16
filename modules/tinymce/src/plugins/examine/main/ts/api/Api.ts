@@ -18,8 +18,8 @@ const get = (editor: Editor): Api => {
   };
 
   const done = () => {
-    return Actions.done(editor)
-  }
+    return Actions.done(editor);
+  };
 
   return {
     custom,

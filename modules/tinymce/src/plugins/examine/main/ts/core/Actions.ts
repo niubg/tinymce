@@ -27,7 +27,6 @@ const markAllMatches = (editor: Editor, pattern: Pattern, inSelection: boolean):
   marker.className = 'mce-match-marker';
   const node = editor.getBody();
 
-
   if (inSelection) {
     return FindMark.findAndMarkInSelection(editor.dom, pattern, editor.selection, marker);
   } else {
@@ -60,7 +59,6 @@ const escapeSearchText = (text: string, wholeWord: boolean): string => {
   return wholeWord ? `(?:^|\\s|${PolarisPattern.punctuation()})` + wordRegex + `(?=$|\\s|${PolarisPattern.punctuation()})` : wordRegex;
 };
 
-
 const tagPrompt = (editor: Editor, text: string, matchCase: boolean, wholeWord: boolean, inSelection: boolean): number => {
   const selection = editor.selection;
   const escapedText = escapeSearchText(text, wholeWord);
@@ -79,7 +77,7 @@ const tagPrompt = (editor: Editor, text: string, matchCase: boolean, wholeWord: 
   }
 
   return count;
-}
+};
 
 const unwrap = (node: Node): void => {
   const parentNode = node.parentNode as Node;
@@ -87,7 +85,6 @@ const unwrap = (node: Node): void => {
   if (node.firstChild) {
     parentNode.insertBefore(node.firstChild, node);
   }
-  
   node.parentNode?.removeChild(node);
 };
 
@@ -98,7 +95,7 @@ const done = (editor: Editor, keepEditorSelection?: boolean): Range | undefined 
   for (let i = 0; i < nodes.length; i++) {
     const nodeIndex = getElmIndex(nodes[i]);
     // 消除所有span中包含data-mark-index属性的标签
-    if (nodeIndex !== null && nodeIndex.length) {     
+    if (nodeIndex !== null && nodeIndex.length) {
       unwrap(nodes[i]);
     }
   }

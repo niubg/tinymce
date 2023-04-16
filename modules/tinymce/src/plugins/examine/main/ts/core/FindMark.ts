@@ -17,7 +17,7 @@ const find = (pattern: Pattern, sections: TextSection[]): TextMatch[][] =>
   });
 // setAttribute给dom追加标签属性,这是查找标记后标签的唯一值
 const mark = (matches: TextMatch[][], replacementNode: HTMLElement, setAttribute?: string): void => {
-  const setAttributes:string = setAttribute ? setAttribute : 'data-mark-index';
+  const setAttributes:string = setAttribute ? setAttribute: 'data-mark-index';
   // Walk backwards and mark the positions
   // Note: We need to walk backwards so the position indexes don't change
   Arr.eachr(matches, (match, idx) => {
