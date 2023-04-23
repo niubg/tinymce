@@ -97,7 +97,6 @@ const moveSelection = (editor: Editor, currentSearchState: Cell<SearchState>, fo
     editor.selection.scrollIntoView(spans[0]);
     return testIndex;
   }
-
   return -1;
 };
 

@@ -13,4 +13,12 @@ tinymce.init({
   // }
 });
 
-export {};
+const tagPrompt = function (text:string): void {
+  if (tinymce.activeEditor) {
+    tinymce.activeEditor.plugins.examine.tagPrompt(text);
+  }
+};
+
+export {
+  tagPrompt
+};

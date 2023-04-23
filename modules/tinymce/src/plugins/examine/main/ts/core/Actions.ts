@@ -85,7 +85,6 @@ const unwrap = (node: Node): void => {
   if (node.firstChild) {
     parentNode.insertBefore(node.firstChild, node);
   }
-
   node.parentNode?.removeChild(node);
 };
 const done = (editor: Editor, index: string, keepEditorSelection?: boolean): Range | undefined => {
