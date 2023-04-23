@@ -19,19 +19,18 @@ const getElmIndex = (elm: Element): string | null => {
   return elm.getAttribute('data-mark-index');
 };
 
-const markAllMatches = (editor: Editor, pattern: Pattern, inSelection: boolean): number => {
+const markAllMatches = (editor: Editor, pattern: Pattern, inSelection: boolean, tipsText: string = '', setAttribute?: string): number => {
   const marker = editor.dom.create('span', {
     'data-mce-bogus': 1
   });
 
-  marker.className = 'mce-match-marker';
+  marker.className = 'tadu-examine';
   const node = editor.getBody();
 
-
   if (inSelection) {
-    return FindMark.findAndMarkInSelection(editor.dom, pattern, editor.selection, marker);
+    return FindMark.findAndMarkInSelection(editor.dom, pattern, editor.selection, marker, tipsText, setAttribute);
   } else {
-    return FindMark.findAndMark(editor.dom, pattern, node, marker);
+    return FindMark.findAndMark(editor.dom, pattern, node, marker, tipsText, setAttribute);
   }
 };
 
@@ -60,8 +59,7 @@ const escapeSearchText = (text: string, wholeWord: boolean): string => {
   return wholeWord ? `(?:^|\\s|${PolarisPattern.punctuation()})` + wordRegex + `(?=$|\\s|${PolarisPattern.punctuation()})` : wordRegex;
 };
 
-
-const tagPrompt = (editor: Editor, text: string, matchCase: boolean, wholeWord: boolean, inSelection: boolean): number => {
+const tagPrompt = (editor: Editor, text: string, matchCase: boolean, wholeWord: boolean, inSelection: boolean, tipsText: string = '', setAttribute?: string): number => {
   const selection = editor.selection;
   const escapedText = escapeSearchText(text, wholeWord);
   const isForwardSelection = selection.isForward();
@@ -70,7 +68,7 @@ const tagPrompt = (editor: Editor, text: string, matchCase: boolean, wholeWord: 
     regex: new RegExp(escapedText, matchCase ? 'g' : 'gi'),
     matchIndex: 1
   };
-  const count = markAllMatches(editor, pattern, inSelection);
+  const count = markAllMatches(editor, pattern, inSelection, tipsText, setAttribute);
 
   // Safari has a bug whereby splitting text nodes breaks the selection (which is done when marking matches).
   // As such we need to manually reset it after doing a find action. See https://bugs.webkit.org/show_bug.cgi?id=230594
@@ -79,7 +77,7 @@ const tagPrompt = (editor: Editor, text: string, matchCase: boolean, wholeWord: 
   }
 
   return count;
-}
+};
 
 const unwrap = (node: Node): void => {
   const parentNode = node.parentNode as Node;
@@ -87,22 +85,28 @@ const unwrap = (node: Node): void => {
   if (node.firstChild) {
     parentNode.insertBefore(node.firstChild, node);
   }
-  
+
   node.parentNode?.removeChild(node);
 };
-
-const done = (editor: Editor, keepEditorSelection?: boolean): Range | undefined => {
+const done = (editor: Editor, index: string, keepEditorSelection?: boolean): Range | undefined => {
   let startContainer: Text | null | undefined;
   let endContainer: Text | null | undefined;
   const nodes = Tools.toArray(editor.getBody().getElementsByTagName('span'));
   for (let i = 0; i < nodes.length; i++) {
     const nodeIndex = getElmIndex(nodes[i]);
-    // 消除所有span中包含data-mark-index属性的标签
-    if (nodeIndex !== null && nodeIndex.length) {     
-      unwrap(nodes[i]);
+    if (index && index.length) {
+      // 消除指定data-mark-index值的标记
+      if (nodeIndex !== null && nodeIndex.length && nodeIndex === index) {
+        unwrap(nodes[i]);
+      }
+    } else {
+      // 消除所有span中包含data-mark-index属性的标签
+      if (nodeIndex !== null && nodeIndex.length) {
+        unwrap(nodes[i]);
+      }
     }
-  }
 
+  }
   if (startContainer && endContainer) {
     const rng = editor.dom.createRng();
     rng.setStart(startContainer, 0);

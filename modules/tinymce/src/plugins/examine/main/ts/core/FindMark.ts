@@ -16,14 +16,18 @@ const find = (pattern: Pattern, sections: TextSection[]): TextMatch[][] =>
     return TextPosition.extract(elements, positions);
   });
 // setAttribute给dom追加标签属性,这是查找标记后标签的唯一值
-const mark = (matches: TextMatch[][], replacementNode: HTMLElement, setAttribute?: string): void => {
-  const setAttributes:string = setAttribute ? setAttribute : 'data-mark-index';
+const mark = (matches: TextMatch[][], replacementNode: HTMLElement, tipsText: string = '', setAttribute?: string): void => {
+  const setAttributes: string = setAttribute ? setAttribute : 'data-mark-index';
+  const unique = String(new Date().getTime());
   // Walk backwards and mark the positions
   // Note: We need to walk backwards so the position indexes don't change
   Arr.eachr(matches, (match, idx) => {
     Arr.eachr(match, (pos) => {
       const wrapper = SugarElement.fromDom(replacementNode.cloneNode(false) as HTMLElement);
-      Attribute.set(wrapper, setAttributes, idx);
+      // 批注data-tips提示文本内容
+      Attribute.set(wrapper, 'data-tips', tipsText);
+      // 批注的索引标识(唯一值) 注：依靠此值来做消除标记操作
+      Attribute.set(wrapper, setAttributes, `${unique}${idx}`);
       const textNode = pos.element.dom;
       if (textNode.length === pos.finish && pos.start === 0) {
         Insert.wrap(pos.element, wrapper);
@@ -38,14 +42,14 @@ const mark = (matches: TextMatch[][], replacementNode: HTMLElement, setAttribute
   });
 };
 
-const findAndMark = (dom: DOMUtils, pattern: Pattern, node: Node, replacementNode: HTMLElement, setAttribute?: string): number => {
+const findAndMark = (dom: DOMUtils, pattern: Pattern, node: Node, replacementNode: HTMLElement, tipsText: string = '', setAttribute?: string): number => {
   const textSections = TextCollect.fromNode(dom, node);
   const matches = find(pattern, textSections);
-  mark(matches, replacementNode, setAttribute);
+  mark(matches, replacementNode, tipsText, setAttribute);
   return matches.length;
 };
 
-const findAndMarkInSelection = (dom: DOMUtils, pattern: Pattern, selection: EditorSelection, replacementNode: HTMLElement): number => {
+const findAndMarkInSelection = (dom: DOMUtils, pattern: Pattern, selection: EditorSelection, replacementNode: HTMLElement, tipsText: string = '', setAttribute?: string): number => {
   const bookmark = selection.getBookmark();
 
   // Handle table cell selection as the table plugin enables
@@ -55,7 +59,7 @@ const findAndMarkInSelection = (dom: DOMUtils, pattern: Pattern, selection: Edit
 
   // Find and mark matches
   const matches = find(pattern, textSections);
-  mark(matches, replacementNode);
+  mark(matches, replacementNode, tipsText, setAttribute);
 
   // Restore the selection
   selection.moveToBookmark(bookmark);

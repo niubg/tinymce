@@ -118,7 +118,6 @@ const escapeSearchText = (text: string, wholeWord: boolean): string => {
 };
 
 const find = (editor: Editor, currentSearchState: Cell<SearchState>, text: string, matchCase: boolean, wholeWord: boolean, inSelection: boolean): number => {
-  debugger
   const selection = editor.selection;
   const escapedText = escapeSearchText(text, wholeWord);
   const isForwardSelection = selection.isForward();
